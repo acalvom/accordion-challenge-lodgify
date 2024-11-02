@@ -1,17 +1,10 @@
 .header {
-    padding: var(--space-unit);
-}
-
-.header h1 {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-size: 1.85rem;
-    font-weight: 600;
+    padding: var(--lg) var(--xxl) var(--xs) var(--xxl);
 }
 
 
 @media only screen and (max-width: 768px) {
     .header {
-        padding: var(--xs);
+        padding: var(--lg) var(--sm) var(--xs) var(--sm);
     }
 }
