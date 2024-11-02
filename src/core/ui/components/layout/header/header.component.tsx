@@ -1,12 +1,13 @@
 import styles from './header.module.css'
 import { bind } from '@/core/styles/bind'
+import { Title } from '@/core/ui/components/title/title.component.tsx'
 
 const cx = bind(styles)
 
 export const Header = () => {
   return (
     <header className={cx('header')}>
-      <h1>Lodgify Grouped Tasks</h1>
+      <Title>Lodgify Grouped Tasks</Title>
     </header>
   )
 }

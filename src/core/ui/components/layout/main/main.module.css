@@ -1,11 +1,11 @@
 .main {
     flex: 1;
-    padding: var(--lg) var(--xxl);
-    margin: 100px 0;
+    padding: var(--xs) var(--xxl);
 }
 
 @media only screen and (max-width: 768px) {
     .main {
-        padding: var(--xxl);
+        padding: var(--xs) var(--md);
     }
 }
+
