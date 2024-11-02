@@ -1,0 +1,45 @@
+:root {
+    /* Palette */
+    --background-color: #ffffff;
+    --on-background-color: #2c2c2c;
+
+    --primary-color: #2c2c2c;
+    --on-primary-color: #ffffff;
+    --secondary-color: #02bc9c;
+    --on-secondary-color: #e6fef9;
+
+    --accent-color: #e6fef9;
+    --on-accent-color: #a3a3a3;
+
+    --light-gray-color: #d1d5db;
+    --gray-color: #818285;
+    --loading-grey: #ededed;
+
+    /* Misc */
+    --border-radius: var(--xs);
+
+    /* Typography */
+    --body-font-family: "Heebo-Regular", sans-serif;
+    --title-font-family: "Heebo-Medium", sans-serif;
+
+    --skeleton-border-radius: var(--border-radius);
+    --skeleton-animation: loading;
+}
+
+@keyframes skeletonAnimation {
+    0% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes loading {
+    to {
+        background-position-x: -20%;
+    }
+}
