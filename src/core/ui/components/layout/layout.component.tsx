@@ -15,7 +15,6 @@ export const Layout = ({ children }: LayoutProps) => {
   return (
     <div className={cx('container')}>
       <Header />
-      <p>sdfas</p>
       <Main>{children}</Main>
     </div>
   )
