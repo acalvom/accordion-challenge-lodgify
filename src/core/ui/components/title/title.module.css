@@ -1,0 +1,7 @@
+.title {
+    font-size: var(--md);
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--primary-color);
+    white-space: nowrap;
+}
