@@ -1,14 +1,15 @@
 :root {
     /* Palette */
     --background-color: #ffffff;
-    --on-background-color: #2c2c2c;
+    --on-background-color: #333333;
 
-    --primary-color: #2c2c2c;
+    --primary-color: #333333;
     --on-primary-color: #ffffff;
     --secondary-color: #02bc9c;
     --on-secondary-color: #e6fef9;
+    --tertiary-color: #999999;
 
-    --accent-color: #e6fef9;
+    --accent-color: #DDDDDD;
     --on-accent-color: #a3a3a3;
 
     --loading-spin-color: var(--secondary-color);
