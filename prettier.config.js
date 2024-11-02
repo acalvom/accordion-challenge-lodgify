@@ -1,0 +1,10 @@
+export default {
+  endOfLine: 'lf',
+  printWidth: 100,
+  semi: false,
+  singleQuote: true,
+  tabWidth: 2,
+  trailingComma: 'es5',
+  bracketSpacing: true,
+  arrowParens: 'always',
+}
