@@ -2,7 +2,6 @@ import { Id } from '@/core/domain/interfaces/id.ts'
 import { Uuid } from '@/core/domain/uuid/uuid.ts'
 
 export interface TaskDto {
-  id: Id
   description: string
   value: number
   checked: boolean
