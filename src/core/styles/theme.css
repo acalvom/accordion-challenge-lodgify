@@ -11,35 +11,10 @@
     --accent-color: #e6fef9;
     --on-accent-color: #a3a3a3;
 
-    --light-gray-color: #d1d5db;
-    --gray-color: #818285;
-    --loading-grey: #ededed;
+    --loading-spin-color: var(--secondary-color);
+    --loading-bulk-color: var(--on-secondary-color);
 
     /* Misc */
-    --border-radius: var(--xs);
-
-    /* Typography */
-    --body-font-family: "Heebo-Regular", sans-serif;
-    --title-font-family: "Heebo-Medium", sans-serif;
-
-    --skeleton-border-radius: var(--border-radius);
-    --skeleton-animation: loading;
+    --border-radius: 50%;
 }
 
-@keyframes skeletonAnimation {
-    0% {
-        opacity: 0.5;
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0.5;
-    }
-}
-
-@keyframes loading {
-    to {
-        background-position-x: -20%;
-    }
-}
