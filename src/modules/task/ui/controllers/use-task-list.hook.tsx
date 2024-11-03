@@ -11,7 +11,7 @@ export function useTaskList() {
     const tasks = await getTasksQuery.execute()
 
     setTasks(tasks)
-    setTimeout(() => setIsFetching(false), 1000)
+    setTimeout(() => setIsFetching(false), 500)
   }
 
   useEffect(() => {

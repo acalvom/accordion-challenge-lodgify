@@ -6,7 +6,7 @@ const cx = bind(styles)
 export const Loading = () => {
   return (
     <div className={cx('wrapper')}>
-      <div className={cx('loading')}></div>
+      <div className={cx('loading')} aria-label="loading-spinner"></div>
     </div>
   )
 }
