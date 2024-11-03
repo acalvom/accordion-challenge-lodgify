@@ -1,5 +1,5 @@
 import { Task } from '@/modules/task/domain/task.ts'
-import { useToggle } from '@/modules/task/ui/controllers/useToggleAccordion.hook.tsx'
+import { useToggle } from '@/modules/task/ui/controllers/use-toggle-accordion.hook.tsx'
 import { GroupAccordionItemHeader } from './group-accordion-item-header.component.tsx'
 import { TaskList } from '../task-list/task-list.component.tsx'
 
