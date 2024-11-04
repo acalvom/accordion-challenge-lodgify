@@ -1,16 +1,14 @@
-import { Loading } from '@/core/ui/components/loading/loading.component.tsx'
 import { Title } from '@/core/ui/components/title/title.component.tsx'
-import { useTaskList } from '../controllers/use-task-list.hook.tsx'
 import { GroupList } from './accordion/group-list/group-list.component.tsx'
+import { useTasks } from '@/modules/task/ui/contexts/task.context.tsx'
 
 export const TasksAccordion = () => {
-  const { tasks, hasTasks, isFetching } = useTaskList()
-  const showTasks = !isFetching && hasTasks
+  const { taskGroups, completionPercentage } = useTasks()
 
   return (
     <>
-      {isFetching && <Loading />}
-      {showTasks ? <GroupList groups={tasks} /> : <Title>No tasks to show</Title>}
+      <Title>{`Completion: ${completionPercentage.toFixed(2)}%`}</Title>
+      <GroupList groups={taskGroups} />
     </>
   )
 }
