@@ -8,6 +8,7 @@ import { GetTasksQuery } from '@/modules/task/application/get-tasks.query.ts'
 import { GroupMother } from '@/modules/task/domain/test/group.mother.ts'
 import { Group } from '@/modules/task/domain/group.ts'
 import { TaskMother } from '@/modules/task/domain/test/task.mother.ts'
+import { TaskProvider } from '@/modules/task/ui/contexts/task.context'
 
 describe('Accordion interaction', () => {
   const setup = (groupList: Group[]) => {
@@ -17,11 +18,20 @@ describe('Accordion interaction', () => {
     vi.spyOn(TaskLocator, 'getTasksQuery').mockReturnValue(
       getTasksQuery as unknown as GetTasksQuery
     )
-    return { getTasksQuery }
+
+    const homeRender = () =>
+      customRender(
+        <TaskProvider groups={groupList}>
+          <Home />
+        </TaskProvider>
+      )
+    return { getTasksQuery, homeRender }
   }
 
   it('should display app title and loading spinner', async () => {
-    customRender(Home())
+    const { homeRender } = setup([])
+
+    homeRender()
 
     const title = screen.getByText('Lodgify Grouped Tasks')
     expect(title).toBeInTheDocument()
@@ -38,9 +48,9 @@ describe('Accordion interaction', () => {
     const groupList = GroupMother.list()
     const [group1, group2, group3] = groupList
 
-    const { getTasksQuery } = setup(groupList)
+    const { homeRender, getTasksQuery } = setup(groupList)
 
-    customRender(Home())
+    homeRender()
 
     const loadingSpinner = screen.queryByLabelText('loading-spinner')
     await waitForElementToBeRemoved(loadingSpinner)
@@ -62,9 +72,9 @@ describe('Accordion interaction', () => {
 
   it('should unfold a group from the accordion', async () => {
     const group = GroupMother.withTasks()
-    const { getTasksQuery } = setup([group])
+    const { getTasksQuery, homeRender } = setup([group])
 
-    customRender(Home())
+    homeRender()
 
     const loadingSpinner = screen.queryByLabelText('loading-spinner')
     await waitForElementToBeRemoved(loadingSpinner)
@@ -85,11 +95,11 @@ describe('Accordion interaction', () => {
 
   it('should validate task info & uncheck from the accordion', async () => {
     const checkedTask = TaskMother.checkedTask()
-
     const group = GroupMother.withOneTask(checkedTask)
-    const { getTasksQuery } = setup([group])
 
-    customRender(Home())
+    const { getTasksQuery, homeRender } = setup([group])
+
+    homeRender()
 
     const loadingSpinner = screen.queryByLabelText('loading-spinner')
     await waitForElementToBeRemoved(loadingSpinner)
@@ -115,12 +125,11 @@ describe('Accordion interaction', () => {
 
   it('should check a task from the accordion', async () => {
     const uncheckedTask = TaskMother.uncheckedTask()
-
     const group = GroupMother.withOneTask(uncheckedTask)
-    const { getTasksQuery } = setup([group])
 
-    customRender(Home())
+    const { homeRender, getTasksQuery } = setup([group])
 
+    homeRender()
     const loadingSpinner = screen.queryByLabelText('loading-spinner')
     await waitForElementToBeRemoved(loadingSpinner)
 
