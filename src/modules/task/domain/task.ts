@@ -1,26 +1,26 @@
 import { Id } from '@/core/domain/interfaces/id.ts'
 import { Uuid } from '@/core/domain/uuid/uuid.ts'
 
-export interface TaskDto {
+export interface TaskPrimitives {
   description: string
   value: number
   checked: boolean
 }
 
-export class Task implements TaskDto {
+export class Task implements TaskPrimitives {
   id: Id
   description: string
   value: number
   checked: boolean
 
-  constructor(value: TaskDto) {
+  constructor(value: TaskPrimitives) {
     this.id = Uuid.create()
     this.description = value.description
     this.value = value.value
     this.checked = value.checked
   }
 
-  static from(value: TaskDto): Task {
+  static from(value: TaskPrimitives): Task {
     return new Task(value)
   }
 }

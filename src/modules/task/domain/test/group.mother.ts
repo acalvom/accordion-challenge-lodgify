@@ -1,23 +1,23 @@
-import { Group, GroupDto } from '@/modules/task/domain/group.ts'
+import { Group, GroupPrimitives } from '@/modules/task/domain/group.ts'
 import { TaskMother } from '@/modules/task/domain/test/task.mother.ts'
 import { faker } from '@faker-js/faker'
-import { TaskDto } from '@/modules/task/domain/task.ts'
+import { TaskPrimitives } from '@/modules/task/domain/task.ts'
 
 export class GroupMother {
-  static withOneTask(task: TaskDto): Group {
-    const groupDto: GroupDto = {
+  static withOneTask(task: TaskPrimitives): Group {
+    const groupPrimitives: GroupPrimitives = {
       name: faker.lorem.words({ min: 1, max: 5 }),
       tasks: [TaskMother.task(task)],
     }
-    return Group.from(groupDto)
+    return Group.from(groupPrimitives)
   }
 
   static withTasks(): Group {
-    const groupDto: GroupDto = {
+    const groupPrimitives: GroupPrimitives = {
       name: faker.lorem.words({ min: 1, max: 5 }),
       tasks: TaskMother.list(),
     }
-    return Group.from(groupDto)
+    return Group.from(groupPrimitives)
   }
 
   static list(length: number = 3): Group[] {
