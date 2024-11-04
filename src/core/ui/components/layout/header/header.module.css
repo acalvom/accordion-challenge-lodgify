@@ -1,10 +1,12 @@
 .header {
     padding: var(--lg) var(--xxl) var(--xs) var(--xxl);
+    margin: 0 var(--space-unit);
 }
 
 
 @media only screen and (max-width: 768px) {
     .header {
         padding: var(--lg) var(--sm) var(--xs) var(--sm);
+        margin: auto;
     }
 }

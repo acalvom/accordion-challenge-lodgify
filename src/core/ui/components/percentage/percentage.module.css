@@ -1,0 +1,23 @@
+.container {
+    height: 20px;
+    background-color: var(--on-secondary-color);
+    border-radius: 10px;
+    margin: var(--md) var(--space-unit);
+}
+
+.progress {
+    height: 100%;
+    background-color: var(--secondary-color);
+    border-radius: 10px 0 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 0.3s ease-in-out;
+}
+
+.text {
+    color: var(--on-secondary-color);
+    font-size: var(--sm);
+    margin: 0 0 0 auto;
+    padding-right: var(--xs);
+}
