@@ -3,12 +3,12 @@ import { useTasks } from '@/modules/task/ui/contexts/task.context.tsx'
 import { Percentage } from '@/core/ui/components/percentage/percentage.component.tsx'
 
 export const TasksComponent = () => {
-  const { taskGroups, completionPercentage } = useTasks()
+  const { groupList, completionPercentage } = useTasks()
 
   return (
     <>
       <Percentage value={completionPercentage} />
-      <GroupList groups={taskGroups} />
+      <GroupList groups={groupList} />
     </>
   )
 }

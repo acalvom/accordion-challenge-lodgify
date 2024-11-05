@@ -6,31 +6,33 @@ import { Id } from '@/core/domain/interfaces/id.ts'
 import { Task } from '@/modules/task/domain/task.ts'
 
 export interface TaskState {
-  taskGroups: Group[]
+  groupList: Group[]
   completionPercentage: number
   toggleTaskChecked: (taskId: string) => void
 }
 
 export const TaskContext = createContext<TaskState>({
-  taskGroups: [],
+  groupList: [],
   completionPercentage: 0,
   toggleTaskChecked: () => {},
 })
 
 export const TaskProvider: FC<PropsWithChildren<{ groups: Group[] }>> = ({ children, groups }) => {
-  const [taskGroups, setTaskGroups] = useState(groups)
-  const completionPercentage = Group.calculateCompletionPercentage(taskGroups)
+  const [groupList, setGroupList] = useState(groups)
+  const completionPercentage = Group.calculateCompletionPercentage(groupList)
 
   useEffect(() => {
-    setTaskGroups(groups)
+    setGroupList(groups)
   }, [groups])
 
   const toggleTaskChecked = (taskId: Id) => {
-    setTaskGroups((prevTaskGroups) =>
+    setGroupList((prevTaskGroups) =>
       prevTaskGroups.map((group) => {
-        const updatedTasks = group.tasks.map((task) =>
-          task.id === taskId ? Task.from({ ...task, checked: !task.checked }) : task
-        )
+        console.log(...groups)
+        const updatedTasks = group.tasks.map((task) => {
+          console.log(task.id, taskId)
+          return task.id === taskId ? Task.from({ ...task, checked: !task.checked }) : task
+        })
 
         return Group.from({
           name: group.name,
@@ -41,7 +43,7 @@ export const TaskProvider: FC<PropsWithChildren<{ groups: Group[] }>> = ({ child
   }
 
   return (
-    <TaskContext.Provider value={{ taskGroups, completionPercentage, toggleTaskChecked }}>
+    <TaskContext.Provider value={{ groupList, completionPercentage, toggleTaskChecked }}>
       {children}
     </TaskContext.Provider>
   )
