@@ -1,6 +1,6 @@
-@import url("./fonts.css");
-@import url("./spacing.css");
-@import url("./theme.css");
+@import url("fonts.css");
+@import url("spacing.css");
+@import url("theme.css");
 
 * {
     box-sizing: border-box;

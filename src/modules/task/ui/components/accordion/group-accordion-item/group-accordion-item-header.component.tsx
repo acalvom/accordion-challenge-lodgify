@@ -1,5 +1,5 @@
 import styles from './group-accordion-item.module.scss'
-import { bind } from '@/core/styles/bind.ts'
+import { bind } from '@/core/ui/styles/bind.ts'
 
 const cx = bind(styles)
 

@@ -1,5 +1,5 @@
 import styles from './percentage.module.css'
-import { bind } from '@/core/styles/bind'
+import { bind } from '@/core/ui/styles/bind'
 
 const cx = bind(styles)
 

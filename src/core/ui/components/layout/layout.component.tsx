@@ -3,7 +3,7 @@ import { Header } from './header/header.component.tsx'
 import { Main } from './main/main.component.tsx'
 
 import styles from './layout.module.css'
-import { bind } from '@/core/styles/bind'
+import { bind } from '@/core/ui/styles/bind'
 
 const cx = bind(styles)
 

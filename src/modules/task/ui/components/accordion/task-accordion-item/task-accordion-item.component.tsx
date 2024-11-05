@@ -1,7 +1,7 @@
 import { Task } from '@/modules/task/domain/task.ts'
 
 import styles from './task-accordion-item.module.scss'
-import { bind } from '@/core/styles/bind.ts'
+import { bind } from '@/core/ui/styles/bind.ts'
 import { useTasks } from '@/modules/task/ui/contexts/task.context.tsx'
 
 const cx = bind(styles)
