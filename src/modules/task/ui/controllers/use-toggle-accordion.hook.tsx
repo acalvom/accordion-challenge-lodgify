@@ -4,7 +4,7 @@ type UseToggleParams = {
   [key: string]: boolean
 }
 
-export const useToggle = (initialState: UseToggleParams = {}) => {
+export const useToggleAccordion = (initialState: UseToggleParams = {}) => {
   const [state, setState] = useState<UseToggleParams>(initialState)
 
   const toggle = (key: string) => {
