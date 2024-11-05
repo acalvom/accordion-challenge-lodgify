@@ -17,17 +17,9 @@ export const TaskContext = createContext<TaskState>({
   toggleTaskChecked: () => {},
 })
 
-const calculateCompletionPercentage = (taskGroups: Group[]): number => {
-  const totalValue = taskGroups.reduce((acc, group) => acc + group.calculateTotal(), 0)
-  const completedValue = taskGroups.reduce((acc, group) => acc + group.calculateCompleted(), 0)
-
-  return totalValue ? (completedValue / totalValue) * 100 : 0
-}
-
-// TODO: refactor, and add test for context  and for this user interaction
 export const TaskProvider: FC<PropsWithChildren<{ groups: Group[] }>> = ({ children, groups }) => {
   const [taskGroups, setTaskGroups] = useState(groups)
-  const completionPercentage = calculateCompletionPercentage(taskGroups)
+  const completionPercentage = Group.calculateCompletionPercentage(taskGroups)
 
   useEffect(() => {
     setTaskGroups(groups)
