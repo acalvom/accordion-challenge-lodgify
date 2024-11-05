@@ -1,7 +1,7 @@
 import { Group, GroupPrimitives } from '@/modules/task/domain/group.ts'
 import { TaskMother } from '@/modules/task/domain/test/task.mother.ts'
 import { faker } from '@faker-js/faker'
-import { TaskPrimitives } from '@/modules/task/domain/task.ts'
+import { Task, TaskPrimitives } from '@/modules/task/domain/task.ts'
 
 export class GroupMother {
   static empty(): Group {
@@ -19,10 +19,10 @@ export class GroupMother {
     return Group.from(groupPrimitives)
   }
 
-  static withTasks(): Group {
+  static withTasks(...tasks: Task[]): Group {
     const groupPrimitives: GroupPrimitives = {
       name: faker.lorem.words({ min: 1, max: 5 }),
-      tasks: TaskMother.list(),
+      tasks: tasks.length ? tasks.map(TaskMother.task) : TaskMother.list(),
     }
     return Group.from(groupPrimitives)
   }
