@@ -1,12 +1,18 @@
 import { useState } from 'react'
 
-export const useToggle = (initialState = false) => {
-  const [isOpen, setIsOpen] = useState(initialState)
+type UseToggleParams = {
+  [key: string]: boolean
+}
 
-  const toggle = () => setIsOpen((prev) => !prev)
+export const useToggle = (initialState: UseToggleParams = {}) => {
+  const [state, setState] = useState<UseToggleParams>(initialState)
 
-  return {
-    isOpen,
-    toggleOpen: toggle,
+  const toggle = (key: string) => {
+    setState((prevState) => ({
+      ...prevState,
+      [key]: !prevState[key],
+    }))
   }
+
+  return [state, toggle] as const
 }

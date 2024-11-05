@@ -7,15 +7,13 @@ import { Group } from '@/modules/task/domain/group.ts'
 
 const cx = bind(styles)
 
-export const GroupAccordionItem = ({
-  group,
-  isOpen,
-  onToggle,
-}: {
+type GroupAccordionItemProps = {
   group: Group
   isOpen: boolean
   onToggle: () => void
-}) => {
+}
+
+export const GroupAccordionItem = ({ group, isOpen, onToggle }: GroupAccordionItemProps) => {
   const { name, tasks } = group
 
   return (
