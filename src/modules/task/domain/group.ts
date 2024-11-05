@@ -3,7 +3,7 @@ import { Id } from '@/core/domain/interfaces/id.ts'
 import { Uuid } from '@/core/domain/uuid/uuid.ts'
 
 export interface GroupPrimitives {
-  id: Id
+  id?: Id
   name: string
   tasks: TaskPrimitives[]
 }

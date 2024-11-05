@@ -2,7 +2,7 @@ import { Id } from '@/core/domain/interfaces/id.ts'
 import { Uuid } from '@/core/domain/uuid/uuid.ts'
 
 export interface TaskPrimitives {
-  id: Id
+  id?: Id
   description: string
   value: number
   checked: boolean
