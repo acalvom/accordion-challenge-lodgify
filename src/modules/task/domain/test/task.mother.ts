@@ -36,4 +36,12 @@ export class TaskMother {
 
     return [...task, ...taskList]
   }
+
+  static primitiveList(length: number = 3): TaskPrimitives[] {
+    return Array.from({ length }, () => ({
+      description: faker.lorem.words({ min: 1, max: 5 }),
+      checked: faker.datatype.boolean(),
+      value: faker.number.int({ min: 1, max: 50 }),
+    }))
+  }
 }

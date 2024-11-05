@@ -4,6 +4,13 @@ import { faker } from '@faker-js/faker'
 import { TaskPrimitives } from '@/modules/task/domain/task.ts'
 
 export class GroupMother {
+  static empty(): Group {
+    return Group.from({
+      name: faker.lorem.words({ min: 1, max: 5 }),
+      tasks: [],
+    })
+  }
+
   static withOneTask(task: TaskPrimitives): Group {
     const groupPrimitives: GroupPrimitives = {
       name: faker.lorem.words({ min: 1, max: 5 }),
@@ -22,5 +29,12 @@ export class GroupMother {
 
   static list(length: number = 3): Group[] {
     return Array.from({ length }, () => this.withTasks())
+  }
+
+  static primitive(): GroupPrimitives {
+    return {
+      name: faker.lorem.words({ min: 1, max: 5 }),
+      tasks: TaskMother.primitiveList(),
+    }
   }
 }
