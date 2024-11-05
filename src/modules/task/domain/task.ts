@@ -2,6 +2,7 @@ import { Id } from '@/core/domain/interfaces/id.ts'
 import { Uuid } from '@/core/domain/uuid/uuid.ts'
 
 export interface TaskPrimitives {
+  id: Id
   description: string
   value: number
   checked: boolean
@@ -14,7 +15,7 @@ export class Task implements TaskPrimitives {
   checked: boolean
 
   constructor(value: TaskPrimitives) {
-    this.id = Uuid.create()
+    this.id = value.id || Uuid.create()
     this.description = value.description
     this.value = value.value
     this.checked = value.checked
@@ -23,9 +24,10 @@ export class Task implements TaskPrimitives {
   static from(value: TaskPrimitives): Task {
     return new Task(value)
   }
-  
+
   toPrimitives(): TaskPrimitives {
     return {
+      id: this.id,
       description: this.description,
       value: this.value,
       checked: this.checked,

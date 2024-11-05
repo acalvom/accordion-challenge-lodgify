@@ -38,6 +38,7 @@ export const TaskProvider: FC<PropsWithChildren<{ groups: Group[] }>> = ({ child
         )
 
         return Group.from({
+          id: group.id,
           name: group.name,
           tasks: updatedTasks.map((task) => task.toPrimitives()),
         })

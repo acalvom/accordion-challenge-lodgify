@@ -3,6 +3,7 @@ import { Id } from '@/core/domain/interfaces/id.ts'
 import { Uuid } from '@/core/domain/uuid/uuid.ts'
 
 export interface GroupPrimitives {
+  id: Id
   name: string
   tasks: TaskPrimitives[]
 }
@@ -13,7 +14,7 @@ export class Group implements GroupPrimitives {
   tasks: Task[]
 
   constructor(value: GroupPrimitives) {
-    this.id = Uuid.create()
+    this.id = value.id || Uuid.create()
     this.name = value.name
     this.tasks = value.tasks.map(Task.from)
   }
