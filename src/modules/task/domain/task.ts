@@ -23,4 +23,12 @@ export class Task implements TaskPrimitives {
   static from(value: TaskPrimitives): Task {
     return new Task(value)
   }
+  
+  toPrimitives(): TaskPrimitives {
+    return {
+      description: this.description,
+      value: this.value,
+      checked: this.checked,
+    }
+  }
 }

@@ -18,6 +18,14 @@ export class Group implements GroupPrimitives {
     this.tasks = value.tasks.map(Task.from)
   }
 
+  calculateTotal(): number {
+    return this.tasks.reduce((sum, { value }) => sum + value, 0)
+  }
+
+  calculateCompleted(): number {
+    return this.tasks.reduce((sum, { value, checked }) => (checked ? sum + value : sum), 0)
+  }
+
   static from(value: GroupPrimitives): Group {
     return new Group(value)
   }

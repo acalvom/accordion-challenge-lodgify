@@ -1,5 +1,9 @@
+/* eslint-disable react-refresh/only-export-components */
+
 import { createContext, FC, PropsWithChildren, useContext, useEffect, useState } from 'react'
 import { Group } from '@/modules/task/domain/group.ts'
+import { Id } from '@/core/domain/interfaces/id.ts'
+import { Task } from '@/modules/task/domain/task.ts'
 
 export interface TaskState {
   taskGroups: Group[]
@@ -14,20 +18,13 @@ export const TaskContext = createContext<TaskState>({
 })
 
 const calculateCompletionPercentage = (taskGroups: Group[]): number => {
-  const totalValue = taskGroups.reduce(
-    (acc, group) => acc + group.tasks.reduce((sum, task) => sum + task.value, 0),
-    0
-  )
-
-  const completedValue = taskGroups.reduce(
-    (acc, group) =>
-      acc + group.tasks.reduce((sum, task) => (task.checked ? sum + task.value : sum), 0),
-    0
-  )
+  const totalValue = taskGroups.reduce((acc, group) => acc + group.calculateTotal(), 0)
+  const completedValue = taskGroups.reduce((acc, group) => acc + group.calculateCompleted(), 0)
 
   return totalValue ? (completedValue / totalValue) * 100 : 0
 }
 
+// TODO: refactor, and add test for context  and for this user interaction
 export const TaskProvider: FC<PropsWithChildren<{ groups: Group[] }>> = ({ children, groups }) => {
   const [taskGroups, setTaskGroups] = useState(groups)
   const completionPercentage = calculateCompletionPercentage(taskGroups)
@@ -36,18 +33,21 @@ export const TaskProvider: FC<PropsWithChildren<{ groups: Group[] }>> = ({ child
     setTaskGroups(groups)
   }, [groups])
 
-  const toggleTaskChecked = (taskId: string) => {
+  const toggleTaskChecked = (taskId: Id) => {
     setTaskGroups((prevTaskGroups) =>
-      prevTaskGroups.map((group) => ({
-        ...group,
-        tasks: group.tasks.map((task) =>
-          task.id === taskId ? { ...task, checked: !task.checked } : task
-        ),
-      }))
+      prevTaskGroups.map((group) => {
+        const updatedTasks = group.tasks.map((task) =>
+          task.id === taskId ? Task.from({ ...task, checked: !task.checked }) : task
+        )
+
+        return Group.from({
+          name: group.name,
+          tasks: updatedTasks.map((task) => task.toPrimitives()),
+        })
+      })
     )
   }
 
-  console.log(completionPercentage)
   return (
     <TaskContext.Provider value={{ taskGroups, completionPercentage, toggleTaskChecked }}>
       {children}
@@ -55,7 +55,6 @@ export const TaskProvider: FC<PropsWithChildren<{ groups: Group[] }>> = ({ child
   )
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useTasks = () => {
   const context = useContext(TaskContext)
   if (context === undefined) {
