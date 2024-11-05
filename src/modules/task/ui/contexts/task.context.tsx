@@ -28,11 +28,14 @@ export const TaskProvider: FC<PropsWithChildren<{ groups: Group[] }>> = ({ child
   const toggleTaskChecked = (taskId: Id) => {
     setGroupList((prevTaskGroups) =>
       prevTaskGroups.map((group) => {
-        console.log(...groups)
-        const updatedTasks = group.tasks.map((task) => {
-          console.log(task.id, taskId)
-          return task.id === taskId ? Task.from({ ...task, checked: !task.checked }) : task
-        })
+        const updatedTasks = group.tasks.map((task) =>
+          task.id === taskId
+            ? Task.from({
+                ...task,
+                checked: !task.checked,
+              })
+            : task
+        )
 
         return Group.from({
           name: group.name,

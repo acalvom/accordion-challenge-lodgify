@@ -10,7 +10,7 @@ import { Group } from '@/modules/task/domain/group.ts'
 import { TaskMother } from '@/modules/task/domain/test/task.mother.ts'
 import { TaskProvider } from '@/modules/task/ui/contexts/task.context'
 
-describe('Accordion interaction', () => {
+describe('Home page', () => {
   const setup = (groupList: Group[]) => {
     const getTasksQuery = {
       execute: vi.fn().mockResolvedValue(groupList),
@@ -28,124 +28,179 @@ describe('Accordion interaction', () => {
     return { getTasksQuery, homeRender }
   }
 
-  it('should display app title and loading spinner', async () => {
-    const { homeRender } = setup([])
+  describe('Percentage interaction', () => {
+    it('should display the completion percentage', async () => {
+      const group = GroupMother.withTasks(
+        TaskMother.checkedTask({ value: 10 }),
+        TaskMother.uncheckedTask({ value: 20 })
+      )
 
-    homeRender()
+      const { homeRender } = setup([group])
 
-    const title = screen.getByText('Lodgify Grouped Tasks')
-    expect(title).toBeInTheDocument()
+      homeRender()
 
-    const loadingSpinner = screen.queryByLabelText('loading-spinner')
-    expect(loadingSpinner).toBeInTheDocument()
+      const loadingSpinner = screen.queryByLabelText('loading-spinner')
+      await waitForElementToBeRemoved(loadingSpinner)
 
-    await waitForElementToBeRemoved(loadingSpinner)
+      const percentage = screen.getByText('33.33%')
+      expect(percentage).toBeInTheDocument()
+    })
 
-    expect(loadingSpinner).not.toBeInTheDocument()
+    it('should update the completion percentage when a task is checked', async () => {
+      const group = GroupMother.withTasks(
+        TaskMother.checkedTask({ value: 10 }),
+        TaskMother.uncheckedTask({ value: 20 })
+      )
+
+      const { homeRender } = setup([group])
+
+      homeRender()
+
+      const loadingSpinner = screen.queryByLabelText('loading-spinner')
+      await waitForElementToBeRemoved(loadingSpinner)
+
+      const percentage = screen.getByText('33.33%')
+      expect(percentage).toBeInTheDocument()
+
+      const toggleButton = screen.getByText('Show')
+      expect(toggleButton).toBeInTheDocument()
+      await userEvent.click(toggleButton)
+
+      const taskDescription = group.tasks[1].description
+      const checkbox = screen.getByRole('checkbox', {
+        name: taskDescription,
+      })
+      expect(checkbox).toBeInTheDocument()
+      expect(checkbox).not.toBeChecked()
+
+      await userEvent.click(checkbox)
+      expect(checkbox).toBeChecked()
+
+      const updatedPercentage = screen.getByText('100.00%')
+      expect(updatedPercentage).toBeInTheDocument()
+    })
   })
 
-  it('should show the accordion with folded groups', async () => {
-    const groupList = GroupMother.list()
-    const [group1, group2, group3] = groupList
+  describe('Accordion interaction', () => {
+    it('should display app title and loading spinner', async () => {
+      const { homeRender } = setup([])
 
-    const { homeRender, getTasksQuery } = setup(groupList)
+      homeRender()
 
-    homeRender()
+      const title = screen.getByText('Lodgify Grouped Tasks')
+      expect(title).toBeInTheDocument()
 
-    const loadingSpinner = screen.queryByLabelText('loading-spinner')
-    await waitForElementToBeRemoved(loadingSpinner)
+      const loadingSpinner = screen.queryByLabelText('loading-spinner')
+      expect(loadingSpinner).toBeInTheDocument()
 
-    expect(getTasksQuery.execute).toHaveBeenCalledOnce()
+      await waitForElementToBeRemoved(loadingSpinner)
 
-    const nameGroup1 = await screen.findByText(group1.name)
-    expect(nameGroup1).toBeInTheDocument()
+      expect(loadingSpinner).not.toBeInTheDocument()
+    })
 
-    const nameGroup2 = await screen.findByText(group2.name)
-    expect(nameGroup2).toBeInTheDocument()
+    it('should show the accordion with folded groups', async () => {
+      const groupList = GroupMother.list()
+      const [group1, group2, group3] = groupList
 
-    const nameGroup3 = await screen.findByText(group3.name)
-    expect(nameGroup3).toBeInTheDocument()
+      const { homeRender, getTasksQuery } = setup(groupList)
 
-    const showLabel = screen.getAllByText('Show')
-    expect(showLabel).toHaveLength(groupList.length)
-  })
+      homeRender()
 
-  it('should unfold a group from the accordion', async () => {
-    const group = GroupMother.withTasks()
-    const { getTasksQuery, homeRender } = setup([group])
+      const loadingSpinner = screen.queryByLabelText('loading-spinner')
+      await waitForElementToBeRemoved(loadingSpinner)
 
-    homeRender()
+      expect(getTasksQuery.execute).toHaveBeenCalledOnce()
 
-    const loadingSpinner = screen.queryByLabelText('loading-spinner')
-    await waitForElementToBeRemoved(loadingSpinner)
+      const nameGroup1 = await screen.findByText(group1.name)
+      expect(nameGroup1).toBeInTheDocument()
 
-    expect(getTasksQuery.execute).toHaveBeenCalledOnce()
+      const nameGroup2 = await screen.findByText(group2.name)
+      expect(nameGroup2).toBeInTheDocument()
 
-    const nameGroup1 = await screen.findByText(group.name)
-    expect(nameGroup1).toBeInTheDocument()
+      const nameGroup3 = await screen.findByText(group3.name)
+      expect(nameGroup3).toBeInTheDocument()
 
-    const showLabel = screen.getByText('Show')
-    expect(showLabel).toBeInTheDocument()
+      const showLabel = screen.getAllByText('Show')
+      expect(showLabel).toHaveLength(groupList.length)
+    })
 
-    await userEvent.click(showLabel)
+    it('should unfold a group from the accordion', async () => {
+      const group = GroupMother.withTasks()
+      const { getTasksQuery, homeRender } = setup([group])
 
-    const hideLabel = screen.getByText('Hide')
-    expect(hideLabel).toBeInTheDocument()
-  })
+      homeRender()
 
-  it('should validate task info & uncheck from the accordion', async () => {
-    const checkedTask = TaskMother.checkedTask()
-    const group = GroupMother.withOneTask(checkedTask)
+      const loadingSpinner = screen.queryByLabelText('loading-spinner')
+      await waitForElementToBeRemoved(loadingSpinner)
 
-    const { getTasksQuery, homeRender } = setup([group])
+      expect(getTasksQuery.execute).toHaveBeenCalledOnce()
 
-    homeRender()
+      const nameGroup1 = await screen.findByText(group.name)
+      expect(nameGroup1).toBeInTheDocument()
 
-    const loadingSpinner = screen.queryByLabelText('loading-spinner')
-    await waitForElementToBeRemoved(loadingSpinner)
+      const showLabel = screen.getByText('Show')
+      expect(showLabel).toBeInTheDocument()
 
-    expect(getTasksQuery.execute).toHaveBeenCalledOnce()
+      await userEvent.click(showLabel)
 
-    const showLabel = screen.getByText('Show')
-    expect(showLabel).toBeInTheDocument()
+      const hideLabel = screen.getByText('Hide')
+      expect(hideLabel).toBeInTheDocument()
+    })
 
-    await userEvent.click(showLabel)
+    it('should validate task info & uncheck from the accordion', async () => {
+      const checkedTask = TaskMother.checkedTask()
+      const group = GroupMother.withOneTask(checkedTask)
 
-    const taskDescription = screen.getByText(checkedTask.description)
-    expect(taskDescription).toBeInTheDocument()
+      const { getTasksQuery, homeRender } = setup([group])
 
-    const taskCheckbox = screen.getByRole('checkbox')
-    expect(taskCheckbox).toBeInTheDocument()
-    expect(taskCheckbox).toBeChecked()
+      homeRender()
 
-    await userEvent.click(taskCheckbox)
+      const loadingSpinner = screen.queryByLabelText('loading-spinner')
+      await waitForElementToBeRemoved(loadingSpinner)
 
-    expect(taskCheckbox).not.toBeChecked()
-  })
+      expect(getTasksQuery.execute).toHaveBeenCalledOnce()
 
-  it('should check a task from the accordion', async () => {
-    const uncheckedTask = TaskMother.uncheckedTask()
-    const group = GroupMother.withOneTask(uncheckedTask)
+      const showLabel = screen.getByText('Show')
+      expect(showLabel).toBeInTheDocument()
 
-    const { homeRender, getTasksQuery } = setup([group])
+      await userEvent.click(showLabel)
 
-    homeRender()
-    const loadingSpinner = screen.queryByLabelText('loading-spinner')
-    await waitForElementToBeRemoved(loadingSpinner)
+      const taskDescription = screen.getByText(checkedTask.description)
+      expect(taskDescription).toBeInTheDocument()
 
-    expect(getTasksQuery.execute).toHaveBeenCalledOnce()
+      const taskCheckbox = screen.getByRole('checkbox')
+      expect(taskCheckbox).toBeInTheDocument()
+      expect(taskCheckbox).toBeChecked()
 
-    const showLabel = screen.getByText('Show')
-    expect(showLabel).toBeInTheDocument()
+      await userEvent.click(taskCheckbox)
 
-    await userEvent.click(showLabel)
+      expect(taskCheckbox).not.toBeChecked()
+    })
 
-    const taskCheckbox = screen.getByRole('checkbox')
-    expect(taskCheckbox).toBeInTheDocument()
-    expect(taskCheckbox).not.toBeChecked()
+    it('should check a task from the accordion', async () => {
+      const uncheckedTask = TaskMother.uncheckedTask()
+      const group = GroupMother.withOneTask(uncheckedTask)
 
-    await userEvent.click(taskCheckbox)
+      const { homeRender, getTasksQuery } = setup([group])
 
-    expect(taskCheckbox).toBeChecked()
+      homeRender()
+      const loadingSpinner = screen.queryByLabelText('loading-spinner')
+      await waitForElementToBeRemoved(loadingSpinner)
+
+      expect(getTasksQuery.execute).toHaveBeenCalledOnce()
+
+      const showLabel = screen.getByText('Show')
+      expect(showLabel).toBeInTheDocument()
+
+      await userEvent.click(showLabel)
+
+      const taskCheckbox = screen.getByRole('checkbox')
+      expect(taskCheckbox).toBeInTheDocument()
+      expect(taskCheckbox).not.toBeChecked()
+
+      await userEvent.click(taskCheckbox)
+
+      expect(taskCheckbox).toBeChecked()
+    })
   })
 })

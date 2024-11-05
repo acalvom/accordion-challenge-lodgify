@@ -8,13 +8,9 @@ const cx = bind(styles)
 
 export const TaskAccordionItem = ({ task }: { task: Task }) => {
   const { id, description, checked } = task
-
   const { toggleTaskChecked } = useTasks()
 
-  const handleCheck = () => {
-    console.log('handleCheck')
-    toggleTaskChecked(task.id)
-  }
+  const handleCheck = () => toggleTaskChecked(task.id)
 
   return (
     <>
